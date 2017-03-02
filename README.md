@@ -77,7 +77,7 @@ Add the following packages to your require section
 "composer/installers": "^1.2",
 "jgrossi/corcel": "dev-master",
 "johnpbloch/wordpress": "^4.7",
-"wp4laravel/wp4laravel: "dev-master",
+"wp4laravel/wp4laravel": "dev-master",
 "wp4laravel/wp4laravel-plugin": "dev-master",
 ```
 
