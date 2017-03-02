@@ -2,7 +2,7 @@
 
 > Note: This project is experimental, don't use it for production.
 
-## The content
+## The concept
 WP4Laravel is by default a standard Laravel project. Instead of using a relational database it uses Wordpress as Content Management System.
 
 The benefits relative to a standard Wordpress Setup:
