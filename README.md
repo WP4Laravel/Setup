@@ -153,39 +153,28 @@ Open your project in the browser, you will see 'Hello World!' as heading.
 
 ## Advanced Custom Fields
 
-TODO:
+What makes Wordpress a real CMS? Right: Advanced Custom Fields. To implement this concept we use 2 packages
 
+* The Advanced Custom Fields wordpress plugin
+* The Corcel ACF plugin to fetch ACF data from a Corcel / Eloquent model.
 
-Advanced Custom Fields
-De package die er voor zorgt dat Wordpress geschikt is als CMS is Advanced Custom Fields Pro.
+To work this out, you have to require to extra packages in your composer.
 
-Om dit concept te implementeren zijn twee packages nodig
+```
+composer require corcel/acf
+composer require wpackagist-plugin/advanced-custom-fields
+```
 
-1. ACF Pro 5
-2. Corcel/ACF package
+> Note: We use ACF Pro, this is a payed plugin and not available as a composer dependency. We created a private Repo on github where we mirrored the ACF PRO plugin. Add an extra repository to composer.json to get this:
 
-De eerste is gewoon de wordpress plugin. Deze wordt door WP4Laravel als spiegel onderhouden op een Github Repo, zodat deze plugin via composer binnengehaald kan worden. De repo is private, bij installeren zal er daarom gevraagd worden om Github account gegevens.
-
-De tweede is de ACF plugin van Corcel, hiermee wordt het mogelijk om ACF data te ontvangen binnen een Laravel Project.
-
-Installatie:
-
-Voeg 2 repositories toe aan de composer.json van het Laravel Project:
-
-
+```
 {
             "type": "vcs",
             "url": "https://github.com/wp4laravel/acf-pro-5"
  },
-{
-            "type": "vcs",
-            "url": "https://github.com/wp4laravel/acf"
-}
+ ```
 
-Voeg beiden als requirement toe in de composer.json
-
-"corcel/acf":"dev-master",
-"wp4laravel/acf-pro-5": "dev-master",
+Look at the docs of Corcel (https://github.com/corcel/acf) for the usage of Corcel with ACF.
 
 
 ## Best practices
