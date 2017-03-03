@@ -223,6 +223,31 @@ Please visit [WordPress Packagist](https://wpackagist.org) website for more info
 
 ###	Create your own models for each post type
 
+If you want take advantage of the power of Eloquent, we advice to create a Laravel model for each of your post types.
+
+```
+namespace App\Models;
+
+use Corcel\Post as Corcel;
+
+class Event extends Corcel
+{
+    protected $postType = 'event';
+}
+```
+
+For example, you can add accessors to make life easier.
+
+###	Register your post types
+
+When you access a post type from a specific model, you have to register this. The best way is to do this in the boot method of your AppServiceProvider.
+
+```
+\Corcel\Post::registerPostType('event', \App\Models\Event::clas);
+```
+
+If you choose to create a new class for your custom post type, you can have this class be returned for all instances of that post type.
+
 ### Pageurl helper
 
 ### Post template helper
@@ -237,17 +262,14 @@ Please visit [WordPress Packagist](https://wpackagist.org) website for more info
 
 ### SEO
 
+### Query and sort on ACF date field
 
+### Render menu's
 
+### Thumbnail url
 
+###	Get URL of post
 
-WP Storage
-Querieen en sorteren op custom field datum
-Render menu’s
-Categorieen
-Thumbnail URL
-Get url of post
-Author avatar
-Social accounts
-Register post types
-AppServiceProvider
+### Social accounts
+
+### AppServiceProvider
