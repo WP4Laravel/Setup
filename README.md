@@ -52,10 +52,6 @@ To use Wordpress as a dependency, you need to extend your composer.json. Add a r
 	{
 		"type": "vcs",
 		"url": "https://github.com/wp4laravel/wp4laravel-plugin"
-	},
-	{
-		"type": "vcs",
-		"url": "https://github.com/wp4laravel/corcel"
 	}
 ],
 ```
@@ -141,13 +137,17 @@ Unfortunetly the base theme and config of Wordpress has to be inside the webroot
 php artisan vendor:publish —provider="WP4Laravel\WP4LaravelServiceProvider"
 ```
 
+### Storage
+
+All Wordpress media will be saved in the location of the Laravel Public storage. To make this work, run the following Artisan command to make a symbolic link in your webroot.
+
+```
+php artisan storage:link
+```
+
 ### Install Wordpress
 
 Go to /wp/wp-admin to setup your Wordpress project.
-
-
-
-Ga naar /wp/wp-admin op je lokale url om het Wordpress installatie proces te starten.
 
 ##	Basic usage
 
@@ -195,19 +195,49 @@ composer require wpackagist-plugin/advanced-custom-fields
 
 Look at the docs of Corcel (https://github.com/corcel/acf) for the usage of Corcel with ACF.
 
+## Wordpress configuration
+
+Within /public/themes/wp4laravel/library you can update the Wordpress configuration. Most used for configuring post types and taxonomies. Every post type kan be defined in the directory post types. En example is already included. For taxonomies it works the same.
+
+If you want to define your post types and taxonomies with a Wordpress plugin, thats no problem.
+
+## Add plugins
+
+Because Wordpress and his plugins are dependencies, you can only use plugins which are available with composer.
+
+[WordPress Packagist](https://wpackagist.org) comes straight out of the box with WP4Laravel. It mirrors the WordPress [plugin](https://plugins.svn.wordpress.org) as a Composer repository.
+
+### How do I use it?
+
+Require the desired plugin using `wpackagist-plugin` as the vendor name.
+
+```bash
+composer require wpackagist-plugin/advanced-custom-fields
+```
+
+Plugins are installed to `public/plugins`.
+
+Please visit [WordPress Packagist](https://wpackagist.org) website for more information and examples.
 
 ## Best practices
 
-TODO:
+###	Create your own models for each post type
 
-Helper voor Page url
-Helper voor Post templates
-Autoloading functions.php
-Site container
-Flex library
-Content en Post caching
-Algolia Search
-Yoast SEO
+### Pageurl helper
+
+### Post template helper
+
+### Site container
+
+### Flex class
+
+### Caching
+
+### Search
+
+### SEO
+
+
 
 
 
