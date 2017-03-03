@@ -134,7 +134,7 @@ WP4Laravel\WP4LaravelServiceProvider::class
 Unfortunetly the base theme and config of Wordpress has to be inside the webroot. You can publish these from WP4LaravelServiceProvider.
 
 ```
-php artisan vendor:publish —provider="WP4Laravel\WP4LaravelServiceProvider"
+php artisan vendor:publish --provider="WP4Laravel\WP4LaravelServiceProvider"
 ```
 
 ### Storage
