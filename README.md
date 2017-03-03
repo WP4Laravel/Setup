@@ -250,6 +250,69 @@ If you choose to create a new class for your custom post type, you can have this
 
 ### Pageurl helper
 
+Route:
+```
+Route::get('{url}', 'PageController')->where('url', '(.*)');
+```
+
+PageController:
+```
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Page;
+
+/**
+ * Catch all routes which are not defined in the routes file
+ * Next search for a page which has the same url structure as the route
+ * If not found,
+ */
+class PageController extends Controller
+{
+    public function show($url)
+    {
+        //	Get the post by url or abort
+        $post = Page::url($url);
+
+        //	Add post data to the site container
+        app('site')->model($post);
+
+
+        //	Show the template which is possibly chosen in WP
+        return view($post->template);
+    }
+}
+
+```
+
+Page Model:
+```
+<?php
+
+namespace App\Models;
+
+use WP4Laravel\Corcel\Pageurl;
+
+/*
+ * Model for WP pages
+ */
+class Page extends Post
+{
+    //	The Pageurl trait has a method to find a page based on the full url.
+    use Pageurl;
+
+
+    /**
+     * What is the WP post type for this model?
+     * @var string
+     */
+    protected $postType = 'page';
+}
+
+```
+
 ### Post template helper
 
 ### Site container
