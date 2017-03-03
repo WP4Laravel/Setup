@@ -93,6 +93,25 @@ composer update
 * Make sure you added a database and added your database credentials to your .env file.
 * Make sure the APP_URL environment variable, matches your local environment.
 
+###	Database config
+
+Copy your database connection in config/database.php, name that connection corcel and fill the prefix attribute with 'wp_'.
+
+```
+'wordpress' => [
+	   'driver'    => 'mysql',
+	   'host'      => 'localhost',
+	   'database'  => 'corcel',
+	   'username'  => 'admin',
+	   'password'  => 'secret',
+	   'charset'   => 'utf8',
+	   'collation' => 'utf8_unicode_ci',
+	   'prefix'    => 'wp_',
+	   'strict'    => false,
+	   'engine'    => null,
+   ],
+ ```
+
 ### Gitignore
 
 Add the following rules to your .gitignore
