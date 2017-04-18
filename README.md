@@ -1,6 +1,6 @@
 # WP4Laravel - A headless Wordpress concept
 
-> Note: This project is experimental, don't use it for production.
+> Note: This project is experimental
 
 ## The concept
 WP4Laravel is by default a standard Laravel project. Instead of using a relational database it uses Wordpress as Content Management System.
