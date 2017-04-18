@@ -2,6 +2,43 @@
 
 > Note: This project is experimental
 
+## Table of contents
+   * [WP4Laravel - A headless Wordpress concept](https://github.com/WP4Laravel/Setup/blob/master/README.md#wp4laravel---a-headless-wordpress-concept)
+      * [The concept](https://github.com/WP4Laravel/Setup/blob/master/README.md#the-concept)
+      * [Dependencies](https://github.com/WP4Laravel/Setup/blob/master/README.md#dependencies)
+      * [Installation](https://github.com/WP4Laravel/Setup/blob/master/README.md#installation)
+         * [Gitignore](https://github.com/WP4Laravel/Setup/blob/master/README.md#gitignore)
+         * [Composer](https://github.com/WP4Laravel/Setup/blob/master/README.md#composer)
+         * [Environment file.](https://github.com/WP4Laravel/Setup/blob/master/README.md#environment-file)
+         * [Database config](https://github.com/WP4Laravel/Setup/blob/master/README.md#database-config)
+         * [Service provider](https://github.com/WP4Laravel/Setup/blob/master/README.md#service-provider)
+         * [Publish public data](https://github.com/WP4Laravel/Setup/blob/master/README.md#publish-public-data)
+         * [Storage](https://github.com/WP4Laravel/Setup/blob/master/README.md#storage)
+         * [Remove unused migrations](https://github.com/WP4Laravel/Setup/blob/master/README.md#remove-unused-migrations)
+         * [Install Wordpress](https://github.com/WP4Laravel/Setup/blob/master/README.md#install-wordpress)
+      * [Basic usage](https://github.com/WP4Laravel/Setup/blob/master/README.md#basic-usage)
+      * [References](https://github.com/WP4Laravel/Setup/blob/master/README.md#references)
+      * [Advanced Custom Fields](https://github.com/WP4Laravel/Setup/blob/master/README.md#advanced-custom-fields)
+      * [Wordpress configuration](https://github.com/WP4Laravel/Setup/blob/master/README.md#wordpress-configuration)
+      * [Add plugins](https://github.com/WP4Laravel/Setup/blob/master/README.md#add-plugins)
+         * [How do I use it?](https://github.com/WP4Laravel/Setup/blob/master/README.md#how-do-i-use-it)
+      * [Best practices](https://github.com/WP4Laravel/Setup/blob/master/README.md#best-practices)
+         * [Create your own models for each post type](https://github.com/WP4Laravel/Setup/blob/master/README.md#create-your-own-models-for-each-post-type)
+         * [Register your post types](https://github.com/WP4Laravel/Setup/blob/master/README.md#register-your-post-types)
+         * [Pageurl helper](https://github.com/WP4Laravel/Setup/blob/master/README.md#pageurl-helper)
+         * [Post template helper](https://github.com/WP4Laravel/Setup/blob/master/README.md#post-template-helper)
+         * [Site container](https://github.com/WP4Laravel/Setup/blob/master/README.md#site-container)
+         * [Flex class](https://github.com/WP4Laravel/Setup/blob/master/README.md#flex-class)
+         * [Caching](https://github.com/WP4Laravel/Setup/blob/master/README.md#caching)
+         * [Search](https://github.com/WP4Laravel/Setup/blob/master/README.md#search)
+         * [SEO](https://github.com/WP4Laravel/Setup/blob/master/README.md#seo)
+         * [Query and sort on ACF date field](https://github.com/WP4Laravel/Setup/blob/master/README.md#query-and-sort-on-acf-date-field)
+         * [Render menu's](https://github.com/WP4Laravel/Setup/blob/master/README.md#render-menus)
+         * [Thumbnail url](https://github.com/WP4Laravel/Setup/blob/master/README.md#thumbnail-url)
+         * [Get URL of post](https://github.com/WP4Laravel/Setup/blob/master/README.md#get-url-of-post)
+         * [Social accounts](https://github.com/WP4Laravel/Setup/blob/master/README.md#social-accounts)
+         * [AppServiceProvider](https://github.com/WP4Laravel/Setup/blob/master/README.md#appserviceprovider)
+
 ## The concept
 WP4Laravel is by default a standard Laravel project. Instead of using a relational database it uses Wordpress as Content Management System.
 
