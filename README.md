@@ -57,25 +57,24 @@ The benefits relative to a standard Laravel project:
 
 ## Dependencies
 
-The basics of WP4Laravel is just e fresh Laravel install. Above that we made a mix of 3 open source projects to come to a proof of concept.
-
+The basis of WP4Laravel is just a fresh Laravel install. We add three open source projects in the mix:
 * Wordpress as a dependency (https://github.com/johnpbloch/wordpress)
 * Corcel: Get Wordpress data with Eloquent (https://github.com/corcel/corcel)
-* Wordplate: Standard theme and plugin for Wordpress (only for inspiration)
+* Wordplate: Standard theme and plugin for Wordpress (only for inspiration, not actually installed)
 
 ## Installation
 
 Start a fresh Laravel 5.4+ install
 
-```
+```bash
 laravel new my-wp-project
 ```
 
 ### Gitignore
 
-Add the following rules to your .gitignore
+Add the following rules to your `.gitignore`
 
-```
+```gitignore
 public/languages
 public/plugins
 public/mu-plugins
@@ -88,7 +87,7 @@ public/wp
 
 To use Wordpress as a dependency, you need to extend your composer.json. Add a repositories section to the composer.json and ad the following repositories:
 
-```
+```json
 "repositories": [
 	{
 		"type": "composer",
@@ -111,7 +110,7 @@ To use Wordpress as a dependency, you need to extend your composer.json. Add a r
 
 Add an 'extra' section to the composer.json, to determine where to install Wordpress and plugins.
 
-```
+```json
 "extra": {
 	"installer-paths": {
 		"public/plugins/{$name}": ["type:wordpress-plugin"]
@@ -150,15 +149,15 @@ Set the table prefix of the database connection to 'wp\_' in `config/database.ph
 
 Add the Service Provider of the WP4Laravel package to your config/app.php
 
-```
+```php
 WP4Laravel\WP4LaravelServiceProvider::class
 ```
 
 ### Publish public data
 
-Unfortunetly the base theme and config of Wordpress has to be inside the webroot. You can publish these from WP4LaravelServiceProvider.
+Unfortunately, the base theme and config of Wordpress has to be inside the webroot. You can publish these from WP4LaravelServiceProvider.
 
-```
+```bash
 php artisan vendor:publish --provider="WP4Laravel\WP4LaravelServiceProvider"
 ```
 
@@ -166,7 +165,7 @@ php artisan vendor:publish --provider="WP4Laravel\WP4LaravelServiceProvider"
 
 All Wordpress media will be saved in the location of the Laravel Public storage. To make this work, run the following Artisan command to make a symbolic link in your webroot.
 
-```
+```bash
 php artisan storage:link
 ```
 
@@ -181,7 +180,7 @@ Go to /wp/wp-admin to setup your Wordpress project.
 
 Edit the default web route in your Laravel
 
-```
+```php
 Route::get('/', function () {
     $post = Corcel\Post::findOrFail(1);
 
@@ -207,19 +206,19 @@ What makes Wordpress a real CMS? Right: Advanced Custom Fields. To implement thi
 
 To work this out, you have to require to extra packages in your composer.
 
-```
+```bash
 composer require corcel/acf
 composer require wpackagist-plugin/advanced-custom-fields
 ```
 
 > Note: We use ACF Pro, this is a paid plugin and not available as a composer dependency. We created a private Repo on github where we mirrored the ACF PRO plugin. Add an extra repository to composer.json to get this:
 
-```
+```json
 {
-            "type": "vcs",
-            "url": "https://github.com/wp4laravel/acf-pro-5"
- },
- ```
+    "type": "vcs",
+    "url": "https://github.com/wp4laravel/acf-pro-5"
+},
+```
 
 Look at the docs of Corcel (https://github.com/corcel/acf) for the usage of Corcel with ACF.
 
@@ -253,7 +252,7 @@ Please visit [WordPress Packagist](https://wpackagist.org) website for more info
 
 If you want take advantage of the power of Eloquent, we advice to create a Laravel model for each of your post types.
 
-```
+```php
 namespace App\Models;
 
 use Corcel\Post as Corcel;
@@ -270,7 +269,7 @@ For example, you can add accessors to make life easier.
 
 When you access a post type from a specific model, you have to register this. The best way is to do this in the boot method of your AppServiceProvider.
 
-```
+```php
 \Corcel\Post::registerPostType('event', \App\Models\Event::clas);
 ```
 
@@ -279,12 +278,12 @@ If you choose to create a new class for your custom post type, you can have this
 ### Pageurl helper
 
 Route:
-```
+```php
 Route::get('{url}', 'PageController')->where('url', '(.*)');
 ```
 
 PageController:
-```
+```php
 <?php
 
 namespace App\Http\Controllers;
@@ -316,7 +315,7 @@ class PageController extends Controller
 ```
 
 Page Model:
-```
+```php
 <?php
 
 namespace App\Models;
@@ -359,7 +358,7 @@ class Page extends Post
 
 ### Thumbnail url
 
-###	Get URL of post
+### Get URL of post
 
 ### Social accounts
 
