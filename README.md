@@ -100,10 +100,6 @@ To use Wordpress as a dependency, you need to extend your composer.json. Add a r
 	{
 		"type": "vcs",
 		"url": "https://github.com/wp4laravel/wp4laravel-plugin"
-	},
-	{
-		"type": "vcs",
-		"url": "https://github.com/wp4laravel/corcel"
 	}
 ],
 ```
@@ -204,20 +200,22 @@ What makes Wordpress a real CMS? Right: Advanced Custom Fields. To implement thi
 * The Advanced Custom Fields wordpress plugin
 * The Corcel ACF plugin to fetch ACF data from a Corcel / Eloquent model.
 
-To work this out, you have to require to extra packages in your composer.
-
-```bash
-composer require corcel/acf
-composer require wpackagist-plugin/advanced-custom-fields
-```
-
-> Note: We use ACF Pro, this is a paid plugin and not available as a composer dependency. We created a private Repo on github where we mirrored the ACF PRO plugin. Add an extra repository to composer.json to get this:
+To work this out, you have to require to extra packages in your composer. Add a custom repository:
 
 ```json
 {
     "type": "vcs",
     "url": "https://github.com/wp4laravel/acf-pro-5"
 },
+{
+    "type": "vcs",
+    "url": "https://github.com/wp4laravel/corcel"
+}
+```
+And require the packages:
+```bash
+composer require corcel/acf
+composer require wp4laravel/acf-pro-5
 ```
 
 Look at the docs of Corcel (https://github.com/corcel/acf) for the usage of Corcel with ACF.
