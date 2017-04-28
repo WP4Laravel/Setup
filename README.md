@@ -25,6 +25,7 @@
     * [Create your own models for each post type](https://github.com/WP4Laravel/Setup/blob/master/README.md#create-your-own-models-for-each-post-type)
     * [Register your post types](https://github.com/WP4Laravel/Setup/blob/master/README.md#register-your-post-types)
     * [Pageurl helper](https://github.com/WP4Laravel/Setup/blob/master/README.md#pageurl-helper)
+    * [Rendering \<picture\> tags](https://github.com/WP4Laravel/Setup/blob/master/README.md#rendering-picture-tags)
     * [Post template helper](https://github.com/WP4Laravel/Setup/blob/master/README.md#post-template-helper)
     * [Site container](https://github.com/WP4Laravel/Setup/blob/master/README.md#site-container)
     * [Flex class](https://github.com/WP4Laravel/Setup/blob/master/README.md#flex-class)
@@ -335,7 +336,65 @@ class Page extends Post
      */
     protected $postType = 'page';
 }
+```
 
+### Rendering \<picture\> tags
+WP4Laravel includes a helper template and ViewProvider to correctly render \<picture\>-tags with crops, etc. This works correctly for both ThumbnailMeta and Image-classes. 
+
+#### Configuration
+A configuration file `config/picture.php` can be published to set the URL-prefix of your uploads folder. The default is `/storage/`. Publish the configuration file to adapt:
+
+```bash
+php artisan vendor:publish --tag=config --provider="WP4Laravel\WP4LaravelServiceProvider"
+```
+
+#### Usage
+Crops must be named 'header_desktop_1x', 'header_mobile_2x', 'header_mobile_1x', 'header_mobile_14x' etc. Configure in Wordpress as follows:
+
+```php
+add_image_size('header_desktop_1x', 1000, 445, true);
+add_image_size('header_desktop_2x', 2000, 890, true);
+add_image_size('header_mobile_1x', 400, 400, true);
+add_image_size('header_mobile_2x', 800, 800, true);
+```
+
+Use the following snippet in your blade views:
+```blade
+@include('wp4laravel::picture', [
+    'picture' => $post->thumbnail,
+    'breakpoints' => [
+        '(min-width: 768px)' => 'header_desktop',
+        '(max-width: 767px)' => 'header_mobile',
+    ],
+])
+```
+
+This results for example in the following output:
+```html
+<picture>
+  <source srcset="/storage/kinderdijk-when-the-sky-is-on-fire-1000x445.jpg 1x, /storage/kinderdijk-when-the-sky-is-on-fire-2000x890.jpg 2x" media="(min-width: 768px)">
+  <source srcset="/storage/kinderdijk-when-the-sky-is-on-fire-400x400.jpg 1x, /storage/kinderdijk-when-the-sky-is-on-fire-800x800.jpg 2x" media="(max-width: 767px)">
+  <img src="/storage/kinderdijk-when-the-sky-is-on-fire.jpg" alt="Kinderdijk with a couple of windmills, viewed at dusk with a stunning red-orange sky">
+</picture>
+```
+
+Configuring breakpoints is optional: not setting them will result in no <source> tags in
+the output. **This is probably not what you want:** you should nearly always set at
+least one breakpoint to utilize crops as responsive images. If you set only one
+breakpoint, omit the media query:
+```blade
+@include('wp4laravel::picture', [
+    'picture' => $post->thumbnail,
+    'breakpoints' => ['header_desktop'],
+])
+```
+
+Note that using multiple \<source\>-tags requires the use of media queries, so while the following example will generate output and not crash, the [W3 Validator](https://validator.w3.org/) will throw an error on your generated HTML. Don't do this.
+```blade
+@include('wp4laravel::picture', [
+    'picture' => $post->thumbnail,
+    'breakpoints' => ['header_desktop', 'header_mobile'],
+])
 ```
 
 ### Post template helper
