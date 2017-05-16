@@ -26,18 +26,6 @@
     * [Register your post types](https://github.com/WP4Laravel/Setup/blob/master/README.md#register-your-post-types)
     * [Pageurl helper](https://github.com/WP4Laravel/Setup/blob/master/README.md#pageurl-helper)
     * [Rendering \<picture\> tags](https://github.com/WP4Laravel/Setup/blob/master/README.md#rendering-picture-tags)
-    * [Post template helper](https://github.com/WP4Laravel/Setup/blob/master/README.md#post-template-helper)
-    * [Site container](https://github.com/WP4Laravel/Setup/blob/master/README.md#site-container)
-    * [Flex class](https://github.com/WP4Laravel/Setup/blob/master/README.md#flex-class)
-    * [Caching](https://github.com/WP4Laravel/Setup/blob/master/README.md#caching)
-    * [Search](https://github.com/WP4Laravel/Setup/blob/master/README.md#search)
-    * [SEO](https://github.com/WP4Laravel/Setup/blob/master/README.md#seo)
-    * [Query and sort on ACF date field](https://github.com/WP4Laravel/Setup/blob/master/README.md#query-and-sort-on-acf-date-field)
-    * [Render menu's](https://github.com/WP4Laravel/Setup/blob/master/README.md#render-menus)
-    * [Thumbnail url](https://github.com/WP4Laravel/Setup/blob/master/README.md#thumbnail-url)
-    * [Get URL of post](https://github.com/WP4Laravel/Setup/blob/master/README.md#get-url-of-post)
-    * [Social accounts](https://github.com/WP4Laravel/Setup/blob/master/README.md#social-accounts)
-    * [AppServiceProvider](https://github.com/WP4Laravel/Setup/blob/master/README.md#appserviceprovider)
 
 ## The concept
 WP4Laravel is by default a standard Laravel project. Instead of using a relational database it uses Wordpress as Content Management System.
@@ -396,27 +384,3 @@ Note that using multiple \<source\>-tags requires the use of media queries, so w
     'breakpoints' => ['header_desktop', 'header_mobile'],
 ])
 ```
-
-### Post template helper
-
-### Site container
-
-### Flex class
-
-### Caching
-
-### Search
-
-### SEO
-
-### Query and sort on ACF date field
-
-### Render menu's
-
-### Thumbnail url
-
-### Get URL of post
-
-### Social accounts
-
-### AppServiceProvider
