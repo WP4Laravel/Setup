@@ -495,8 +495,8 @@ class Post extends \Corcel\Post
 
 Including the trait with add a `language` scope for use with Eloquent and a `language` property. 
 ```php
-$posts = Post::language('de')->published()->get();
-echo $post->first()->language; // de
+$posts = Post::language('de')->published()->first();
+echo $post->language; // de
 ```
 
 It also includes a `translations` property which yields a collection, keyed by the language code, of all available translations of a given post.
