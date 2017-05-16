@@ -26,6 +26,7 @@
     * [Register your post types](https://github.com/WP4Laravel/Setup/blob/master/README.md#register-your-post-types)
     * [Pageurl helper](https://github.com/WP4Laravel/Setup/blob/master/README.md#pageurl-helper)
     * [Rendering \<picture\> tags](https://github.com/WP4Laravel/Setup/blob/master/README.md#rendering-picture-tags)
+    * [Using the MenuBuilder to construct menus](https://github.com/WP4Laravel/Setup#using-the-menubuilder-to-construct-menus)
 
 ## The concept
 WP4Laravel is by default a standard Laravel project. Instead of using a relational database it uses Wordpress as Content Management System.
