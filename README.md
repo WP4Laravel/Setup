@@ -384,3 +384,101 @@ Note that using multiple \<source\>-tags requires the use of media queries, so w
     'breakpoints' => ['header_desktop', 'header_mobile'],
 ])
 ```
+
+### Using the MenuBuilder to construct menus
+WP4Laravel supplies a MenuBuilder utility class that can calculate the correct menu for you. You can use the class in a ViewComposer for example. This class correctly deals with using the custom title of a menu item or the post title when none is set. 
+
+The MenuBuilder class has a single public method `itemsIn($menu)` which returns a Collection of top-level items in the menu. Each entry has an `id` (int), `title` (string), `active` (whether this item should be "selected", boolean) and `url` (string) property. 
+
+This class supports a single level of nesting (two levels in total). Root-level items have a `children` (Collection) property with a list of their immediate child entries. Additionally, a root-level item has a boolean `childActive` property which is true if any of its children have the `active` flag set.
+
+The MenuBuilder requires that your model has a `url` property that contains the canonical URL of an instance of the model.
+
+### Example usage
+Add a URL property on your model. For example, when using a custom slug in the URL and a multilanguage-based setup:
+```php
+use App\Models\Traits\Translatable;
+
+class Post extends \Corcel\Post
+{
+    protected $postType = 'post';
+    protected $urlScope = 'nieuws';
+
+    /**
+     * Full URL to a post object
+     * @return string
+     */
+    public function getUrlAttribute()
+    {
+        $url = '/' . $this->slug;
+
+        // Prepend URL scope
+        if (!empty($this->urlScope)) {
+            $url = '/' . $this->urlScope . $url;
+        }
+
+        // Prepend the language if it's not the default language
+        if (!empty($this->language) && $this->language !== config('app.supported-locales')[0]) {
+            $url = '/' . $this->language . $url;
+        }
+
+        return $url;
+    }
+}
+
+```
+
+Add a view:
+```blade
+<nav>
+    <ul class=menu>
+        @foreach ($menu as $item)
+            <li>
+                <a class="{{ $item->active || $item->childActive ? 'active' : '' }}" 
+                    href="{{ $item->url }}">
+                    {{ $item->title }}
+                </a>
+
+                <ul class=submenu>
+                    @foreach ($item->children as $child)
+                        <li>
+                            <a href="{{ $child->url }}" class="{{ $child->active ? 'active' : '' }}">
+                                {{ $child->title }}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            </li>
+        @endforeach
+    </ul>
+</nav>
+```
+
+Add a ViewComposer for that view:
+```php
+<?php
+
+namespace App\Http\ViewComposers;
+
+use Corcel\Menu;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
+use WP4Laravel\MenuBuilder;
+
+class Navigation
+{
+    private $builder;
+
+    public function __construct(MenuBuilder $builder)
+    {
+        $this->builder = $builder;
+    }
+
+    public function compose(View $view)
+    {
+    	$menu = Menu::slug('main-menu')->first();
+        $view->with('menu', $this->builder->itemsIn($menu));
+    }
+}
+```
+
