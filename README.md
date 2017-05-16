@@ -483,3 +483,23 @@ class Navigation
 }
 ```
 
+### Translatable models
+A Translatable trait is included for working with the [Polylang](https://wordpress.org/plugins/polylang/) plugin. Include this trait in your models to gain access to useful properties for working with translated versions of posts. 
+```php
+class Post extends \Corcel\Post
+{
+    use \WP4Laravel\Multilanguage\Translatable;
+}
+```
+
+Including the trait with add a `language` scope for use with Eloquent and a `language` property. 
+```php
+$posts = Post::language('de')->published()->get();
+echo $post->first()->language; // de
+```
+
+It also includes a `translations` property which yields a collection, keyed by the language code, of all available translations of a given post.
+```php
+$post = Post::slug('about-us')->first();
+echo $post->translations['nl']->title; // Over ons
+```
