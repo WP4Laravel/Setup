@@ -484,6 +484,13 @@ class Navigation
 }
 ```
 
+Alternatively, you can use the MenuBuilder-facade to gain a static interface:
+```php
+use WP4Laravel\Facades\MenuBuilder;
+
+MenuBuilder::all();
+```
+
 ### Translatable models
 A Translatable trait is included for working with the [Polylang](https://wordpress.org/plugins/polylang/) plugin. Include this trait in your models to gain access to useful properties for working with translated versions of posts. 
 ```php
