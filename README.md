@@ -83,14 +83,6 @@ To use Wordpress as a dependency, you need to extend your composer.json. Add a r
 	{
 		"type": "composer",
 		"url": "https://wpackagist.org"
-	},
-	{
-		"type": "vcs",
-		"url": "https://github.com/wp4laravel/wp4laravel"
-	},
-	{
-		"type": "vcs",
-		"url": "https://github.com/wp4laravel/wp4laravel-plugin"
 	}
 ],
 ```
@@ -110,10 +102,10 @@ Add the following packages to your require section
 
 ```
 "composer/installers": "^1.2",
-"jgrossi/corcel": "dev-master",
-"johnpbloch/wordpress": "^4.7",
-"wp4laravel/wp4laravel": "dev-master",
-"wp4laravel/wp4laravel-plugin": "dev-master",
+"jgrossi/corcel": "^1.4",
+"johnpbloch/wordpress": "^4.8",
+"wp4laravel/wp4laravel": "^0.4",
+"wp4laravel/wp4laravel-plugin": "^0.1",
 ```
 
 Now you can update your composer.
@@ -130,7 +122,7 @@ composer update
 
 ### Database config
 
-Set the table prefix of the database connection to 'wp\_' in `config/database.php`. 
+Copy the default mysql connection and name it 'wordpress'. Set the table prefix of the database connection to 'wp\_' in `config/database.php`. 
 
 ### Service provider
 
