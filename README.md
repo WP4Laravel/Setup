@@ -102,9 +102,8 @@ Add the following packages to your require section
 
 ```
 "composer/installers": "^1.2",
-"jgrossi/corcel": "^1.4",
 "johnpbloch/wordpress": "^4.8",
-"wp4laravel/wp4laravel": "^0.4",
+"wp4laravel/wp4laravel": "^0.5",
 "wp4laravel/wp4laravel-plugin": "^0.1",
 ```
 
@@ -183,15 +182,7 @@ What makes Wordpress a real CMS? Right: Advanced Custom Fields. To implement thi
 * The Advanced Custom Fields wordpress plugin
 * The Corcel ACF plugin to fetch ACF data from a Corcel / Eloquent model.
 
-To work this, out first get in the ACF package
-
-```bash
-composer require corcel/acf
-```
-
-To get in advanced custom fields PRO with composer, follow the instructions on https://github.com/PhilippBaschke/acf-pro-installer
-
-If you don't have a license for ACF Pro, you can use the free version:
+The Corcel ACF plugin is a direct dependency of WP4Laravel and is automatically installed. To get the ACF 5 PRO plugin in Wordpress using composer, follow the instructions on https://github.com/PhilippBaschke/acf-pro-installer. Alternatively, if you don't have a license for ACF Pro, you can use the free version:
 
 ```bash
 composer require wpackagist-plugin/advanced-custom-fields
