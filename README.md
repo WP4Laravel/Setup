@@ -2,6 +2,8 @@
 
 > Note: This project is experimental
 
+>Note: If using Laravel 5.4, use the 0.5 version. From 0.6 only Laravel 5.5 is supported.
+
 ## Table of contents
 * [The concept](https://github.com/WP4Laravel/Setup/blob/master/README.md#the-concept)
 * [Dependencies](https://github.com/WP4Laravel/Setup/blob/master/README.md#dependencies)
@@ -24,10 +26,13 @@
 * [Best practices](https://github.com/WP4Laravel/Setup/blob/master/README.md#best-practices)
     * [Create your own models for each post type](https://github.com/WP4Laravel/Setup/blob/master/README.md#create-your-own-models-for-each-post-type)
     * [Register your post types](https://github.com/WP4Laravel/Setup/blob/master/README.md#register-your-post-types)
-    * [Pageurl helper](https://github.com/WP4Laravel/Setup/blob/master/README.md#pageurl-helper)
+    * [Catch-all your pages](https://github.com/WP4Laravel/Setup/blob/master/README.md#catch-all-your-pages)
+    * [Setup your homepage](https://github.com/WP4Laravel/Setup/blob/master/README.md#setup-your-homepage)
+    * [Get the url of a page](https://github.com/WP4Laravel/Setup/blob/master/README.md#get-the-url-of-a-page)
     * [Rendering \<picture\> tags](https://github.com/WP4Laravel/Setup/blob/master/README.md#rendering-picture-tags)
     * [Using the MenuBuilder to construct menus](https://github.com/WP4Laravel/Setup#using-the-menubuilder-to-construct-menus)
     * [Translatable models](https://github.com/WP4Laravel/Setup#translatable-models)
+    * [Activate WP preview function](https://github.com/WP4Laravel/Setup#preview-function)
 
 ## The concept
 WP4Laravel is by default a standard Laravel project. Instead of using a relational database it uses Wordpress as Content Management System.
@@ -121,15 +126,35 @@ composer update
 
 ### Database config
 
-Copy the default mysql connection and name it 'wordpress'. Set the table prefix of the database connection to 'wp\_' in `config/database.php`. 
+Copy the default mysql connection and name it 'wordpress'. Set the table prefix of the database connection to 'wp\_' in `config/database.php`.
 
 ### Service provider
+
+>Note: Only if using Laravel 5.4 or below.
 
 Add the Service Provider of the WP4Laravel package to your config/app.php
 
 ```php
 WP4Laravel\WP4LaravelServiceProvider::class
 ```
+
+
+### Install Corcel
+
+At this point Corcel does not has package auto discovery, so add the service provider of Corcel to your config/app.php
+
+```php
+Corcel\Laravel\CorcelServiceProvider::class,
+```
+
+Now publish the corcel config file:
+
+```bash
+php artisan vendor:publish --provider="Corcel\Laravel\CorcelServiceProvider"
+```
+
+Open the app/corcel.php config file and define your database connection.
+
 
 ### Publish public data
 
@@ -235,20 +260,29 @@ For example, you can add accessors to make life easier.
 
 ###	Register your post types
 
-When you access a post type from a specific model, you have to register this. The best way is to do this in the boot method of your AppServiceProvider.
+When you access a post type from a specific model, you have to register this. You can do this to match a post_type with the dedicated model in the config/corcel.php file. For example:
 
+config/corcel.php
 ```php
-\Corcel\Post::registerPostType('event', \App\Models\Event::clas);
+'post_types' => [
+      'page' => \App\Models\Page::class,
+      'faq' => \App\Models\Faq::class,
+      'post' => \App\Models\Blog::class
+],
 ```
 
 If you choose to create a new class for your custom post type, you can have this class be returned for all instances of that post type.
 
-### Pageurl helper
+### Catch-all your pages
+
+First you have to make sure you define your catch all route at the bottom of your routes file:
 
 Route:
 ```php
-Route::get('{url}', 'PageController')->where('url', '(.*)');
+Route::get('{url}', 'PageController')->where('url', '(.*)')->name('page.show');
 ```
+
+Create a PageController with the show method inside:
 
 PageController:
 ```php
@@ -307,8 +341,45 @@ class Page extends Post
 }
 ```
 
+### Setup your homepage
+
+> Note: This feature is available since version 0.7
+
+Use a specific controller for your homepage or use the index method in your PageController for the homepage. Select in Wordpress in Settings/Reading the page which you want to use as Homepage.
+
+```php
+namespace App\Http\Controllers;
+
+use App\Models\Page;
+
+class HomeController extends Controller {
+
+    public function __invoke()
+    {
+        /*
+         * The Pageurl trait includes a homepage method wich get the ID of the page from the WP_options table
+         */
+        $post = Page::homepage();
+
+        return view('home', compact('post'));
+    }
+
+}
+```
+
+### Get the url of a page
+
+> Note: This feature is available since version 0.7
+
+The Pageurl trait includes a getUrlAttribute method which generated the url of a page. This will include the path if a page has a parent.
+
+```php
+$page->url;
+```
+
+
 ### Rendering \<picture\> tags
-WP4Laravel includes a helper template and ViewProvider to correctly render \<picture\>-tags with crops, etc. This works correctly for both ThumbnailMeta and Image-classes. 
+WP4Laravel includes a helper template and ViewProvider to correctly render \<picture\>-tags with crops, etc. This works correctly for both ThumbnailMeta and Image-classes.
 
 #### Configuration
 A configuration file `config/picture.php` can be published to set the URL-prefix of your uploads folder. The default is `/storage/`. Publish the configuration file to adapt:
@@ -367,9 +438,9 @@ Note that using multiple \<source\>-tags requires the use of media queries, so w
 ```
 
 ### Using the MenuBuilder to construct menus
-WP4Laravel supplies a MenuBuilder utility class that can calculate the correct menu for you. You can use the class in a ViewComposer for example. This class correctly deals with using the custom title of a menu item or the post title when none is set. 
+WP4Laravel supplies a MenuBuilder utility class that can calculate the correct menu for you. You can use the class in a ViewComposer for example. This class correctly deals with using the custom title of a menu item or the post title when none is set.
 
-The MenuBuilder class has a single public method `itemsIn($menu)` which returns a Collection of top-level items in the menu. Each entry has an `id` (int), `title` (string), `active` (whether this item should be "selected", boolean) and `url` (string) property. 
+The MenuBuilder class has a single public method `itemsIn($menu)` which returns a Collection of top-level items in the menu. Each entry has an `id` (int), `title` (string), `active` (whether this item should be "selected", boolean) and `url` (string) property.
 
 This class supports a single level of nesting (two levels in total). Root-level items have a `children` (Collection) property with a list of their immediate child entries. Additionally, a root-level item has a boolean `childActive` property which is true if any of its children have the `active` flag set.
 
@@ -415,7 +486,7 @@ Add a view:
     <ul class=menu>
         @foreach ($menu as $item)
             <li>
-                <a class="{{ $item->active || $item->childActive ? 'active' : '' }}" 
+                <a class="{{ $item->active || $item->childActive ? 'active' : '' }}"
                     href="{{ $item->url }}">
                     {{ $item->title }}
                 </a>
@@ -471,7 +542,7 @@ MenuBuilder::all();
 ```
 
 ### Translatable models
-A Translatable trait is included for working with the [Polylang](https://wordpress.org/plugins/polylang/) plugin. Include this trait in your models to gain access to useful properties for working with translated versions of posts. 
+A Translatable trait is included for working with the [Polylang](https://wordpress.org/plugins/polylang/) plugin. Include this trait in your models to gain access to useful properties for working with translated versions of posts.
 ```php
 class Post extends \Corcel\Post
 {
@@ -479,7 +550,7 @@ class Post extends \Corcel\Post
 }
 ```
 
-Including the trait with add a `language` scope for use with Eloquent and a `language` property. 
+Including the trait with add a `language` scope for use with Eloquent and a `language` property.
 ```php
 $posts = Post::language('de')->published()->first();
 echo $post->language; // de
@@ -489,4 +560,77 @@ It also includes a `translations` property which yields a collection, keyed by t
 ```php
 $post = Post::slug('about-us')->first();
 echo $post->translations['nl']->title; // Over ons
+```
+
+### Activate WP preview function
+
+> Note: This feature is available since version 0.7
+
+With a few simple steps you can activate the preview function of Wordpress. Unfortunately the preview URL's are not secured!
+
+* Make sure you have a named route for a detail page of each post type, like:
+
+```php
+Route::get('blog/{slug}', 'BlogController@show')->name('blog.show');
+```
+
+* Open config/corcel.php and append a preview array to map post types to named routes. Below an example:
+
+```php
+'preview' => [
+    'post' => 'blog.show',
+    'page' => 'page.show',
+    'faq' => 'faq.show',
+],
+```
+
+* When you want to preview a post which is not yet published, the Wordpress endpoint for the preview is your homepage added with some GET parameters. To catch these parameters you have to append a specific middleware to your homepage route. When the middleware matches a preview, it will redirect to the defined route of the post type, like 'blog.show'. As slug will be used "\_\_preview".
+
+```php
+Route::get('/', 'HomeController')->name('home')->middleware(WP4Laravel\Middleware\Preview::class);
+```
+
+>Note: You are free to implement the middleware on your own way, more info at the [Laravel Docs](https://laravel.com/docs/master/middleware)
+
+* Append the Preview trait to you dedicated models:
+
+```php
+namespace App\Models;
+
+use WP4Laravel\Corcel\Preview;
+
+class Post extends \Corcel\Model\Post {
+    use Preview;
+}
+```
+
+* Make sure each model has a static method called current. This method will be used to select the current post based on the url. In most cases this method looks like:
+
+```
+public static function current($slug)
+{
+    return static::published()
+            ->slug($url)
+            ->firstOrFail();
+}
+```
+
+Excepts for a page which can have a parent, use the following if your Page models uses the Pageurl trait.
+
+```
+public static function current($url)
+{
+    return static::url($url);
+}
+```
+
+* In your controller use the static method publishedOrPreview method to get your current post or a preview.
+
+```
+public function show(Request $request, $slug)
+{
+    $post = Post::publishedOrPreview($request, $slug);
+
+    return view($post->template, compact('post'));
+}
 ```
