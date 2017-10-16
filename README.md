@@ -119,6 +119,7 @@ composer update
 * Add the Wordpress salts to your .env file, with http://wordplate.github.io/salt/
 * Make sure you added a database and added your database credentials to your .env file.
 * Make sure the APP_URL environment variable, matches your local environment.
+* Remove all settings that are not needed for your project, such as redis and email.
 
 ### Database config
 
