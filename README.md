@@ -137,21 +137,17 @@ WP4Laravel\WP4LaravelServiceProvider::class
 
 
 ### Install Corcel
+Publish the corcel config file:
+```bash
+php artisan vendor:publish --provider="Corcel\Laravel\CorcelServiceProvider"
+```
+Open the app/corcel.php config file and define your database connection.
 
-At this point Corcel does not has package auto discovery, so add the service provider of Corcel to your config/app.php
+If you're using Laravel 5.4 or earlier, you need to configure the CorcelServiceProvider. Add the following line to your config/app.php under "Package Service Providers":
 
 ```php
 Corcel\Laravel\CorcelServiceProvider::class,
 ```
-
-Now publish the corcel config file:
-
-```bash
-php artisan vendor:publish --provider="Corcel\Laravel\CorcelServiceProvider"
-```
-
-Open the app/corcel.php config file and define your database connection.
-
 
 ### Publish public data
 
