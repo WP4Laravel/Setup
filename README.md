@@ -35,6 +35,7 @@
     - [Configuration](#configuration)
     - [Usage](#usage)
   + [Using the MenuBuilder to construct menus](#using-the-menubuilder-to-construct-menus)
+  + [Making translatable menu's](#making-translatable-menus)
   + [Example usage](#example-usage)
   + [Translatable models](#translatable-models)
   + [Activate WP preview function](#activate-wp-preview-function)
@@ -445,7 +446,7 @@ This class supports a single level of nesting (two levels in total). Root-level 
 
 The MenuBuilder requires that your model has a `url` property that contains the canonical URL of an instance of the model.
 
-### Example usage
+#### Example usage
 Add a URL property on your model. For example, when using a custom slug in the URL and a multilanguage-based setup:
 ```php
 use App\Models\Traits\Translatable;
@@ -538,6 +539,27 @@ Alternatively, you can use the MenuBuilder-facade to gain a static interface:
 use WP4Laravel\Facades\MenuBuilder;
 
 MenuBuilder::all();
+```
+
+### Making translatable menu's
+:warning: This is the new syntax, soon<sup>TM</sup> to be released.
+
+The MenuBuilder has a utility function to work with menu's that have been translated using Polylang. First, configure your theme to have various menu locations. These are the slots on your website in which a menu is going to be displayed. Each entry has a location identifier and description:
+
+```php
+register_nav_menu('main', 'Main navigation in header');
+register_nav_menu('contact', 'Contact links in menu dropdown and footer');
+register_nav_menu('footer', 'Additional footer links');
+```
+
+Polylang will automatically make translated locations for every language you specify. Use the Wordpress admin interface to create a menu and assign it to a location. Than, call the `MenuBuilder::menuForLocation($slot, $language)` method call to find the appropriate menu for a location. It returns a basic `Corcel\Model\Menu class. This method supports both translated and untranslated menu structures.
+
+```php
+// Get a untranslated menu
+$menu = MenuBuilder::menuForLocation('main');
+
+// Get a translated menu for a location
+$menu = MenuBuilder::menuForLocation('main', Localization::getCurrentLanguage());
 ```
 
 ### Translatable models
