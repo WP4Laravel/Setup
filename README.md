@@ -31,7 +31,7 @@
   + [Catch-all your pages](#catch-all-your-pages)
   + [Setup your homepage](#setup-your-homepage)
   + [Get the url of a page](#get-the-url-of-a-page)
-  + [Rendering \ tags](#rendering--tags)
+  + [Rendering \<picture\> tags](#rendering-picture-tags)
     - [Configuration](#configuration)
     - [Usage](#usage)
   + [Using the MenuBuilder to construct menus](#using-the-menubuilder-to-construct-menus)
