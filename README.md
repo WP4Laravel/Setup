@@ -185,9 +185,9 @@ Edit the default web route in your Laravel
 
 ```php
 Route::get('/', function () {
-    $post = Corcel\Post::findOrFail(1);
+    $post = Corcel\Model\Post::findOrFail(1);
 
-    return view('welcome', compact($post));
+    return view('welcome', compact('post'));
 });
 ```
 
