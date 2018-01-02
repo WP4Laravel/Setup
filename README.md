@@ -1,11 +1,8 @@
 # WP4Laravel - A headless Wordpress concept
 
-> Note: This project is experimental
-
->Note: If using Laravel 5.4, use the 0.5 version. From 0.6 only Laravel 5.5 is supported.
-
 ## Table of contents
 * [Table of contents](#table-of-contents)
+* [Supported versions](#supported-versions)
 * [The concept](#the-concept)
 * [Dependencies](#dependencies)
 * [Installation](#installation)
@@ -40,6 +37,11 @@
   + [Translatable models](#translatable-models)
   + [Activate WP preview function](#activate-wp-preview-function)
   + [SEO tags for models](#seo-tags-for-models)
+  
+## Supported versions
+Old versions of wp4laravel are generally not maintained. We actively maintain two releases:
+* 0.4.* as the legacy release for Laravel-project < 5.5
+* The latest version branch (0.7 right now) for Laravel-projects >= 5.5
 
 ## The concept
 WP4Laravel is by default a standard Laravel project. Instead of using a relational database it uses Wordpress as Content Management System.
