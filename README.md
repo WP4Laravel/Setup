@@ -542,8 +542,6 @@ MenuBuilder::all();
 ```
 
 ### Making translatable menu's
-:warning: This is the new syntax, soon<sup>TM</sup> to be released.
-
 The MenuBuilder has a utility function to work with menu's that have been translated using Polylang. First, configure your theme to have various menu locations. These are the slots on your website in which a menu is going to be displayed. Each entry has a location identifier and description:
 
 ```php
@@ -657,8 +655,6 @@ public function show(Request $request, $slug)
 ```
 
 ### SEO tags for models
-:warning: This is the new syntax, soon<sup>TM</sup> to be released. Refer to the Seo-trait code for how you should use the current, undocumented version.
-
 Creating the right SEO-tags depends on defining what the "primary" model instance is of this page. On the page of a news item, this is likely the news item itself. For an index page, you might want to create a specific page (with or without content) just so that you have place to configure Yoast.
 
 The primary instance for a site is set on the Site. You usually do this in every controller action that renders a page.
