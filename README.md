@@ -29,8 +29,8 @@
   + [Setup your homepage](#setup-your-homepage)
   + [Get the url of a page](#get-the-url-of-a-page)
   + [Rendering \<picture\> tags](#rendering-picture-tags)
-    - [Configuration](#configuration)
     - [Usage](#usage)
+    - [Using ImageFake in the styleguide](#using-imagefake-in-the-styleguide)
   + [Using the MenuBuilder to construct menus](#using-the-menubuilder-to-construct-menus)
   + [Making translatable menu's](#making-translatable-menus)
   + [Example usage](#example-usage)
@@ -383,13 +383,6 @@ $page->url;
 ### Rendering \<picture\> tags
 WP4Laravel includes a helper template and ViewProvider to correctly render \<picture\>-tags with crops, etc. This works correctly for both ThumbnailMeta and Image-classes.
 
-#### Configuration
-A configuration file `config/picture.php` can be published to set the URL-prefix of your uploads folder. The default is `/storage/`. Publish the configuration file to adapt:
-
-```bash
-php artisan vendor:publish --tag=config --provider="WP4Laravel\WP4LaravelServiceProvider"
-```
-
 #### Usage
 Crops must be named 'header_desktop_1x', 'header_mobile_2x', 'header_mobile_1x', 'header_mobile_14x' etc. Configure in Wordpress as follows:
 
@@ -438,6 +431,47 @@ Note that using multiple \<source\>-tags requires the use of media queries, so w
     'breakpoints' => ['header_desktop', 'header_mobile'],
 ])
 ```
+
+#### Using ImageFake in the styleguide
+Images are complex objects in the Wordpress/Corcel-environment, and mocking them is not trivial. This presents problems: if you design a component that renders some HTML and a inner image using `WP4Laravel\Picture`, you need to create a pretty complex structure to have all the necessary fields available.
+
+For this use case, we offer a fake class: `WP4Laravel\ImageFake`. This fake class presents the necessary fields and methods to appear as valid option to WP4Laravel\Picture and can be used in the styleguide to render components that contain images. *Note that ImageFake is only suitable for use with Picture, as it is a partial fake.* 
+
+An example: suppose you have a component named "pretty_picture" that renders a single image + figure and caption. The component HTML looks like this:
+
+```blade
+<figure>
+    @include('wp4laravel::picture', [
+		'picture' => $image,
+		'breakpoints' => ['pretty'],
+	])
+	<figcaption>{{ $caption }}</figcaption>
+</figure>
+```
+
+You can use this component on the website as such, where $block->fields->image is an instance of either ThumbnailMeta or Image, and $captionText is a string:
+
+```blade
+@include('components/blocks/gallery', [
+    'image' => $block->fields->image,
+	'caption' => $block->fields->captionText,
+])
+```
+
+In the styleguide, you can use ImageFake instead:
+
+```blade
+@include('components/blocks/gallery', [
+    'image' => \WP4Laravel\ImageFake::make([
+		'full' => '/build/images/_temp/gallery-1.jpg',
+		'pretty_220w' => '/build/images/_temp/gallery-1.jpg',
+		'pretty_440w' => '/build/images/_temp/gallery-1@2x.jpg',
+	]),
+	'caption' => 'Such a pretty sight!',
+])
+```
+
+**Caution:** FakeImage requires that you always specify at least the 'full' option, as that is the case for real images too.
 
 ### Using the MenuBuilder to construct menus
 WP4Laravel supplies a MenuBuilder utility class that can calculate the correct menu for you. You can use the class in a ViewComposer for example. This class correctly deals with using the custom title of a menu item or the post title when none is set.
