@@ -37,6 +37,9 @@
   * [Translatable models](#translatable-models)
   * [Activate WP preview function](#activate-wp-preview-function)
   * [SEO tags for models](#seo-tags-for-models)
+  * [Hosting assets on S3](#hosting-assets-on-s3)
+    + [Requirements](#requirements)
+    + [Usage](#usage-1)
 
 ## Supported versions
 Old versions of wp4laravel are generally not maintained. We actively maintain two releases:
@@ -711,3 +714,37 @@ This trait adds a seo-attribute `$post->seo` which contains an array of all meta
     <meta name=“{{ $name }}” content=“{{ $content }}“>
 @endforeach
 ```
+
+### Hosting assets on S3
+The Corcel libraries doesn't support media posts from external storage like an S3 bucket. This wrapper adds this support to get url's of the original files but also the url's of the generated thumbnails.
+
+#### Requirements
+* Laravel configured with S3 storage
+* Wordpress configured with the S3 Offload plugin
+
+#### Usage
+Get the url of the featured image of a post
+
+```php
+\WP4Laravel\S3Media::handle($post->thumbnail)->url();
+```
+
+The same from the site container in a blade template
+
+```blade
+{{ $site->s3($post->thumbnail)->url() }}
+```
+
+Get the url of the 'large' crop from the media object
+
+```blade
+{{ $site->s3($post->thumbnail)->size('large') }}
+```
+
+Get the url of an ACF Image field
+
+```blade
+{{ $site->s3($post->acf->image('my_image_field'))->url() }}
+```
+
+Because of the main usage in a blade template, the S3Media object does not generate exceptions. If something is wrong (bad input, file not exists) the url() and site() methods just returns null.
