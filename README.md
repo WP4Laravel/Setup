@@ -586,7 +586,7 @@ register_nav_menu('contact', 'Contact links in menu dropdown and footer');
 register_nav_menu('footer', 'Additional footer links');
 ```
 
-Polylang will automatically make translated locations for every language you specify. Use the Wordpress admin interface to create a menu and assign it to a location. Than, call the `MenuBuilder::menuForLocation($slot, $language)` method call to find the appropriate menu for a location. It returns a basic `Corcel\Model\Menu class. This method supports both translated and untranslated menu structures.
+Polylang will automatically make translated locations for every language you specify. Use the Wordpress admin interface to create a menu and assign it to a location. Than, call the `MenuBuilder::menuForLocation($slot, $language)` method call to find the appropriate menu for a location. It returns a basic `Corcel\Model\Menu` class. This method supports both translated and untranslated menu structures.
 
 ```php
 // Get a untranslated menu
