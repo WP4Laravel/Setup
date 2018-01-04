@@ -37,7 +37,7 @@
   + [Translatable models](#translatable-models)
   + [Activate WP preview function](#activate-wp-preview-function)
   + [SEO tags for models](#seo-tags-for-models)
-  
+
 ## Supported versions
 Old versions of wp4laravel are generally not maintained. We actively maintain two releases:
 * 0.4.* as the legacy release for Laravel-project < 5.5
@@ -435,7 +435,7 @@ Note that using multiple \<source\>-tags requires the use of media queries, so w
 #### Using ImageFake in the styleguide
 Images are complex objects in the Wordpress/Corcel-environment, and mocking them is not trivial. This presents problems: if you design a component that renders some HTML and a inner image using `WP4Laravel\Picture`, you need to create a pretty complex structure to have all the necessary fields available.
 
-For this use case, we offer a fake class: `WP4Laravel\ImageFake`. This fake class presents the necessary fields and methods to appear as valid option to WP4Laravel\Picture and can be used in the styleguide to render components that contain images. *Note that ImageFake is only suitable for use with Picture, as it is a partial fake.* 
+For this use case, we offer a fake class: `WP4Laravel\ImageFake`. This fake class presents the necessary fields and methods to appear as valid option to WP4Laravel\Picture and can be used in the styleguide to render components that contain images. *Note that ImageFake is only suitable for use with Picture, as it is a partial fake.*
 
 An example: suppose you have a component named "pretty_picture" that renders a single image + figure and caption. The component HTML looks like this:
 
