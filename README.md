@@ -469,12 +469,18 @@ In the styleguide, you can use ImageFake instead:
 		'full' => '/build/images/_temp/gallery-1.jpg',
 		'pretty_220w' => '/build/images/_temp/gallery-1.jpg',
 		'pretty_440w' => '/build/images/_temp/gallery-1@2x.jpg',
-	]),
+	], 'Alt-text goes here'),
 	'caption' => 'Such a pretty sight!',
 ])
 ```
 
-**Caution:** FakeImage requires that you always specify at least the 'full' option, as that is the case for real images too.
+The alt-text is optional. ImageFake requires that you always specify at least the 'full' option, as that is the case for real images too. The minimum data you'll need to add is thus:
+
+```blade
+\WP4Laravel\ImageFake::make([
+    'full' => '/build/images/_temp/gallery-1.jpg',
+]);
+```
 
 ### Using the MenuBuilder to construct menus
 WP4Laravel supplies a MenuBuilder utility class that can calculate the correct menu for you. You can use the class in a ViewComposer for example. This class correctly deals with using the custom title of a menu item or the post title when none is set.
