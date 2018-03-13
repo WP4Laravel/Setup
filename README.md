@@ -485,7 +485,7 @@ The alt-text is optional. ImageFake requires that you always specify at least th
 ### Using the MenuBuilder to construct menus
 WP4Laravel supplies a MenuBuilder utility class that can calculate the correct menu for you. You can use the class in a ViewComposer for example. This class correctly deals with using the custom title of a menu item or the post title when none is set.
 
-The MenuBuilder class has a single public method `itemsIn($menu)` which returns a Collection of top-level items in the menu. Each entry has an `id` (int), `title` (string), `active` (whether this item should be "selected", boolean) and `url` (string) property.
+The MenuBuilder class has a single public method `itemsIn($menu)` which returns a Collection of top-level items in the menu. Each entry has an `id` (int), `title` (string), `active` (whether this item should be "selected", boolean) and `url` (string) property. Additionally, each item has a `target` property (boolean). If set, you should open the link in a new tab. *Make sure to set rel=noopener too to prevent cross-site scripting and performance problems.*
 
 This class supports a single level of nesting (two levels in total). Root-level items have a `children` (Collection) property with a list of their immediate child entries. Additionally, a root-level item has a boolean `childActive` property which is true if any of its children have the `active` flag set.
 
@@ -532,7 +532,7 @@ Add a view:
         @foreach ($menu as $item)
             <li>
                 <a class="{{ $item->active || $item->childActive ? 'active' : '' }}"
-                    href="{{ $item->url }}">
+                    href="{{ $item->url }}" {!! $item->target ? 'target="_blank" rel=noopener' : '' !!}>
                     {{ $item->title }}
                 </a>
 
