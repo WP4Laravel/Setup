@@ -40,6 +40,7 @@
   * [Hosting assets on S3](#hosting-assets-on-s3)
     + [Requirements](#requirements)
     + [Usage](#usage-1)
+  * [RSS-feeds](#rss-feeds)
 
 ## Supported versions
 Old versions of wp4laravel are generally not maintained. We actively maintain two releases:
@@ -754,3 +755,31 @@ Get the url of an ACF Image field
 ```
 
 Because of the main usage in a blade template, the S3Media object does not generate exceptions. If something is wrong (bad input, file not exists) the url() and site() methods just returns null.
+
+### RSS-feeds
+> This feature requires WP4Laravel 0.8.0 or later
+
+WP4Laravel has built-in rudimentary support for generating RSS-feeds. Use as follows:
+```php
+return WP4Laravel\RSS::feed(Illuminate\Support\Collection $posts, string $title);
+```
+The first argument is a (Eloquent) Collection of all items you want included in your feed (note: these items must be
+instances or subclasses of `Corcel\Model\Post`). The second parameter is the title included of the feed.
+
+
+#### Example usage
+Add a route in your `routes/web.php` file:
+```php
+Route::get('/news/feed.xml', 'NewsController@feed');
+```
+
+and add a method to your controller:
+```php
+class NewsController
+{
+    public function feed()
+    {
+        return \WP4Laravel\RSS::feed(News::all(), 'Alle nieuwsberichten');
+    }
+}
+```
