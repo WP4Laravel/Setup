@@ -779,7 +779,7 @@ class NewsController
 {
     public function feed()
     {
-        return \WP4Laravel\RSS::feed(News::all(), 'Alle nieuwsberichten');
+        return \WP4Laravel\Facades\RSS::feed(News::all(), 'Alle nieuwsberichten');
     }
 }
 ```
