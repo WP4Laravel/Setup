@@ -245,6 +245,49 @@ Plugins are installed to `public/plugins`.
 
 Please visit [WordPress Packagist](https://wpackagist.org) website for more information and examples.
 
+## Multilanguage
+WP4Laravel contains various options to work with multilanguage-enabled websites. These solutions are based on using the free version of Poylang ([plugin](https://wordpress.org/plugins/polylang/), [wpackagist](https://wpackagist.org/search?q=polylang&type=any&search=)).
+
+### Making translatable menu's
+The MenuBuilder has a utility function to work with menu's that have been translated using Polylang. First, configure your theme to have various menu locations. These are the slots on your website in which a menu is going to be displayed. Each entry has a location identifier and description:
+
+```php
+register_nav_menu('main', 'Main navigation in header');
+register_nav_menu('contact', 'Contact links in menu dropdown and footer');
+register_nav_menu('footer', 'Additional footer links');
+```
+
+Polylang will automatically make translated locations for every language you specify. Use the Wordpress admin interface to create a menu and assign it to a location. Than, call the `MenuBuilder::menuForLocation($slot, $language)` method call to find the appropriate menu for a location. It returns a basic `Corcel\Model\Menu` class. This method supports both translated and untranslated menu structures.
+
+```php
+// Get a untranslated menu
+$menu = MenuBuilder::menuForLocation('main');
+
+// Get a translated menu for a location
+$menu = MenuBuilder::menuForLocation('main', Localization::getCurrentLanguage());
+```
+
+### Translatable models
+A Translatable trait is included for working with the [Polylang](https://wordpress.org/plugins/polylang/) plugin. Include this trait in your models to gain access to useful properties for working with translated versions of posts.
+```php
+class Post extends \Corcel\Post
+{
+    use \WP4Laravel\Multilanguage\Translatable;
+}
+```
+
+Including the trait with add a `language` scope for use with Eloquent and a `language` property.
+```php
+$posts = Post::language('de')->published()->first();
+echo $post->language; // de
+```
+
+It also includes a `translations` property which yields a collection, keyed by the language code, of all available translations of a given post.
+```php
+$post = Post::slug('about-us')->first();
+echo $post->translations['nl']->title; // Over ons
+```
+
 ## Best practices
 
 ###	Create your own models for each post type
@@ -585,46 +628,6 @@ Alternatively, you can use the MenuBuilder-facade to gain a static interface:
 use WP4Laravel\Facades\MenuBuilder;
 
 MenuBuilder::all();
-```
-
-### Making translatable menu's
-The MenuBuilder has a utility function to work with menu's that have been translated using Polylang. First, configure your theme to have various menu locations. These are the slots on your website in which a menu is going to be displayed. Each entry has a location identifier and description:
-
-```php
-register_nav_menu('main', 'Main navigation in header');
-register_nav_menu('contact', 'Contact links in menu dropdown and footer');
-register_nav_menu('footer', 'Additional footer links');
-```
-
-Polylang will automatically make translated locations for every language you specify. Use the Wordpress admin interface to create a menu and assign it to a location. Than, call the `MenuBuilder::menuForLocation($slot, $language)` method call to find the appropriate menu for a location. It returns a basic `Corcel\Model\Menu` class. This method supports both translated and untranslated menu structures.
-
-```php
-// Get a untranslated menu
-$menu = MenuBuilder::menuForLocation('main');
-
-// Get a translated menu for a location
-$menu = MenuBuilder::menuForLocation('main', Localization::getCurrentLanguage());
-```
-
-### Translatable models
-A Translatable trait is included for working with the [Polylang](https://wordpress.org/plugins/polylang/) plugin. Include this trait in your models to gain access to useful properties for working with translated versions of posts.
-```php
-class Post extends \Corcel\Post
-{
-    use \WP4Laravel\Multilanguage\Translatable;
-}
-```
-
-Including the trait with add a `language` scope for use with Eloquent and a `language` property.
-```php
-$posts = Post::language('de')->published()->first();
-echo $post->language; // de
-```
-
-It also includes a `translations` property which yields a collection, keyed by the language code, of all available translations of a given post.
-```php
-$post = Post::slug('about-us')->first();
-echo $post->translations['nl']->title; // Over ons
 ```
 
 ### Activate WP preview function
