@@ -633,6 +633,9 @@ use WP4Laravel\Facades\MenuBuilder;
 MenuBuilder::all();
 ```
 
+### Translated menu's
+The MenuBuilder has support for translating menu's in various languages. See [Multilanguage](#multilanguage) > [Making translatable menu's](#making-translatable-menus) for instructions.
+
 ### Activate WP preview function
 
 > Note: This feature is available since version 0.7
